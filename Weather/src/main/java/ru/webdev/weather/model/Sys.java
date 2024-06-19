@@ -9,10 +9,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class Sys {
 
-    private int type;
-
-    private int id;
-
     private String country;
 
     private int sunrise;
