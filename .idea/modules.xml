@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/EvoWeatherInfo.iml" filepath="$PROJECT_DIR$/EvoWeatherInfo.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Weather/Weather.iml" filepath="$PROJECT_DIR$/Weather/Weather.iml" />
     </modules>
   </component>
 </project>

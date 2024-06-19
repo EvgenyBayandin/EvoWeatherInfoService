@@ -12,7 +12,7 @@
     <artifactId>Weather</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Weather</name>
-    <description>Weather</description>
+    <description>Weather service</description>
     <url/>
     <licenses>
         <license/>
