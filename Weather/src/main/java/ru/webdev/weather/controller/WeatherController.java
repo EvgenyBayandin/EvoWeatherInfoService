@@ -6,14 +6,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.cache.CacheManager;
+import org.springframework.cache.annotation.Cacheable;
 import ru.webdev.weather.model.Main;
 import ru.webdev.weather.model.Root;
 
 @RestController
 public class WeatherController {
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Value("${appid}")
     String appId;
@@ -21,12 +20,31 @@ public class WeatherController {
     @Value("${url.weather}")
     String urlWeather;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private CacheManager cacheManager;
+
+
     @GetMapping("/weather")
+    @Cacheable(value = "weather-cache", key = "#lat+'_'+#lon")
     public Main getWeather(@RequestParam String lat, @RequestParam String lon) {
 
-        String request = String.format("%s?lat=%s&lon=%s&units=metric&appid=%s", urlWeather, lat, lon, appId);
+        // Проверим наличие даных в кеше по ключу
+        String key = lat+"_"+lon;
+        Main cachedData = cacheManager.getCache("weather-cache").get(key, Main.class);
+        if(cachedData != null){
+            // Получим данные из кеша
+            return cachedData;
+        } else {
+            // Если нет, то получим данные из API и сохраним их в кеш
+            String request = String.format("%s?lat=%s&lon=%s&units=metric&appid=%s", urlWeather, lat, lon, appId);
+            Main mainData  = restTemplate.getForObject(request, Root.class).getMain();
+            cacheManager.getCache("weather-cache").put(key, mainData);
+            return mainData;
+        }
 
-        return restTemplate.getForObject(request, Root.class).getMain();
     }
 
 }
