@@ -21,15 +21,15 @@ public class LocationController {
     private RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping("/weather")
-    public Weather redirectRequestWeather(@RequestParam String name){
-        Geodata geodata = repository.findByName(name).get();
+    public Weather redirectRequestWeather(@RequestParam String location){
+        Geodata geodata = repository.findByName(location).get();
         String url = String.format("http://localhost:8082/weather?lat=%s&lon=%s", geodata.getLat(), geodata.getLon());
         return restTemplate.getForObject(url, Weather.class);
     }
 
     @GetMapping
-    public Optional<Geodata> getLocation(@RequestParam String name) {
-        return repository.findByName(name);
+    public Optional<Geodata> getLocation(@RequestParam String location) {
+        return repository.findByName(location);
     }
 
     @PostMapping
