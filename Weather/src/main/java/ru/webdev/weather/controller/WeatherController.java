@@ -20,8 +20,7 @@ public class WeatherController {
     @Value("${url.weather}")
     String urlWeather;
 
-    @Autowired
-    private RestTemplate restTemplate;
+    RestTemplate restTemplate = new RestTemplate();
 
     @Autowired
     private CacheManager cacheManager;

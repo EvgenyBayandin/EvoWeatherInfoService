@@ -18,7 +18,7 @@ public class LocationController {
     @Autowired
     private GeodataRepository repository;
 
-    private RestTemplate restTemplate = new RestTemplate();
+    RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping("/weather")
     public Weather redirectRequestWeather(@RequestParam String location){
