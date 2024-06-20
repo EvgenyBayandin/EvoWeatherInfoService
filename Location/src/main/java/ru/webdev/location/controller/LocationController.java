@@ -25,12 +25,12 @@ public class LocationController {
         return restTemplate.getForObject(url, Weather.class);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public Iterable<Location> findAll() {
         return repository.findAll();
     }
 
-    @GetMapping
+    @GetMapping("/")
     public Optional<Location> getLocation(@RequestParam String name) {
         return repository.findByName(name);
     }
@@ -40,7 +40,7 @@ public class LocationController {
         return repository.save(location);
     }
 
-    @PutMapping
+    @PutMapping("/")
     public Location putLocation(@RequestBody Location location, @RequestParam String name)  {
         Location existing = repository.findByName(name).get();
         existing.setName(location.getName());
@@ -49,7 +49,7 @@ public class LocationController {
         return repository.save(existing);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/")
     public void deleteLocation(@RequestParam String name)   {
         Location existing = repository.findByName(name).get();
         repository.delete(existing);
