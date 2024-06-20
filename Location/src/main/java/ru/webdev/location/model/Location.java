@@ -12,17 +12,17 @@ import lombok.NonNull;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Geodata {
+public class Location {
 
     @Id
     @GeneratedValue
     int id;
 
     @NonNull
-    private double lon;
+    private Double Longitude;
 
     @NonNull
-    private double lat;
+    private Double Latitude;
 
     @NonNull
     private String name;
