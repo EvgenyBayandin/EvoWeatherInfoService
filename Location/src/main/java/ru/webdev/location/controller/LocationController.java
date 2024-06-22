@@ -1,5 +1,8 @@
 package ru.webdev.location.controller;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +22,18 @@ public class LocationController {
     private RestTemplate restTemplate;
 
     @GetMapping("/weather")
-    public Weather redirectRequestWeather(@RequestParam String location){
-        Location geodata = repository.findByName(location).get();
+    public Weather redirectRequestWeather(@RequestParam String name){
+        Location geodata = repository.findByName(name).get();
         String url = String.format("http://localhost:8082/weather?lat=%s&lon=%s", geodata.getLatitude(), geodata.getLongitude());
         return restTemplate.getForObject(url, Weather.class);
     }
 
     @GetMapping
-    public Iterable<Location> findAll() {
-        return repository.findAll();
+    public List<Location> findAll() {
+        return new ArrayList<>((Collection) repository.findAll());
     }
 
-    @GetMapping("/")
+    @GetMapping(params = "name")
     public Optional<Location> getLocation(@RequestParam String name) {
         return repository.findByName(name);
     }
@@ -40,7 +43,7 @@ public class LocationController {
         return repository.save(location);
     }
 
-    @PutMapping("/")
+    @PutMapping
     public Location putLocation(@RequestBody Location location, @RequestParam String name)  {
         Location existing = repository.findByName(name).get();
         existing.setName(location.getName());
@@ -49,7 +52,7 @@ public class LocationController {
         return repository.save(existing);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     public void deleteLocation(@RequestParam String name)   {
         Location existing = repository.findByName(name).get();
         repository.delete(existing);
