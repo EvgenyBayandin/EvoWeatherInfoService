@@ -34,7 +34,7 @@ public class Person {
     @NonNull
     private String location;
 
-    public Person(@NonNull String firstname, @NonNull String surname, @NonNull String lastname, @lombok.NonNull LocalDate birthdate, @NonNull String location) {
+    public Person(@NonNull String firstname, @NonNull String surname, @NonNull String lastname, @NonNull LocalDate birthdate, @NonNull String location) {
         this.firstname = firstname;
         this.surname = surname;
         this.lastname = lastname;
