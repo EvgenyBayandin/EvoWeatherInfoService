@@ -6,7 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import ru.webdev.person.model.Person;
+import ru.webdev.person.model.User;
 import ru.webdev.person.model.Weather;
 import ru.webdev.person.repository.PersonRepository;
 
@@ -21,7 +21,7 @@ public class PersonController {
     private RestTemplate restTemplate;
 
     @GetMapping
-    public ResponseEntity<Iterable<Person>> findAll() {
+    public ResponseEntity<Iterable<User>> findAll() {
         if (repository.findAll().iterator().hasNext()) {
             return new ResponseEntity(repository.findAll(), HttpStatus.OK);
         }
@@ -29,42 +29,42 @@ public class PersonController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Optional<Person>> findById(@PathVariable int id) {
+    public ResponseEntity<Optional<User>> findById(@PathVariable int id) {
         if (repository.existsById(id)) {
             return new ResponseEntity(repository.findById(id), HttpStatus.OK);
         }
-        return new ResponseEntity("Person by ID: " + id + " not found.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity("User by ID: " + id + " not found.", HttpStatus.NOT_FOUND);
     }
 
     @PostMapping
-    public ResponseEntity<Person> save(@RequestBody Person person) {
-        return repository.findById(person.getId()).isPresent()
-                ? new ResponseEntity(repository.findById(person.getId()), HttpStatus.BAD_REQUEST)
-                : new ResponseEntity(repository.save(person), HttpStatus.CREATED);
+    public ResponseEntity<User> save(@RequestBody User user) {
+        return repository.findById(user.getId()).isPresent()
+                ? new ResponseEntity(repository.findById(user.getId()), HttpStatus.BAD_REQUEST)
+                : new ResponseEntity(repository.save(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Person> update(@PathVariable int id, @RequestBody Person person) {
+    public ResponseEntity<User> update(@PathVariable int id, @RequestBody User user) {
         if (repository.existsById(id)) {
-            Person p = repository.findById(id).get();
-            p.setFirstname(person.getFirstname());
-            p.setLastname(person.getLastname());
-            p.setSurname(person.getSurname());
-            p.setBirthdate(person.getBirthdate());
-            p.setLocation(person.getLocation());
+            User p = repository.findById(id).get();
+            p.setFirstname(user.getFirstname());
+            p.setLastname(user.getLastname());
+            p.setSurname(user.getSurname());
+            p.setBirthdate(user.getBirthdate());
+            p.setLocation(user.getLocation());
             repository.save(p);
             return new ResponseEntity(p, HttpStatus.OK);
         }
-        return new ResponseEntity("Person by ID: " + id + " not found.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity("User by ID: " + id + " not found.", HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Person> delete(@PathVariable int id) {
+    public ResponseEntity<User> delete(@PathVariable int id) {
         if (repository.existsById(id)) {
             repository.deleteById(id);
             return new ResponseEntity(HttpStatus.OK);
         }
-        return new ResponseEntity("Person by ID: " + id + " not found.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity("User by ID: " + id + " not found.", HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/{id}/weather")
@@ -74,7 +74,7 @@ public class PersonController {
             Weather weather = restTemplate.getForObject("http://localhost:8083/location/weather?name=" + location, Weather.class);
             return new ResponseEntity(weather, HttpStatus.OK);
         }
-        return new ResponseEntity("Person by ID: " + id + " not found.", HttpStatus.NOT_FOUND);
+        return new ResponseEntity("User by ID: " + id + " not found.", HttpStatus.NOT_FOUND);
     }
 
 
