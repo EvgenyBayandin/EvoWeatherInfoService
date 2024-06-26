@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 import ru.webdev.person.model.Person;
+import ru.webdev.person.model.Weather;
 import ru.webdev.person.repository.PersonRepository;
 
 @RestController
@@ -21,7 +22,7 @@ public class PersonController {
     @Autowired
     private PersonRepository repository;
 
-    RestTemplate restTemplate = new RestTemplate();
+    private RestTemplate restTemplate = new RestTemplate();
 
     @GetMapping
     public Iterable<Person> findAll(){
@@ -32,6 +33,17 @@ public class PersonController {
     public Optional<Person> findById(@PathVariable int id){
         return repository.findById(id);
     }
+
+    @GetMapping("/{id}/weather")
+    public ResponseEntity<Weather> getWeather(@PathVariable int id){
+        if(repository.existsById(id)){
+            String location = repository.findById(id).get().getLocation();
+            Weather weather = restTemplate.getForObject("http://localhost:8083/location/weather?name=" + location, Weather.class);
+            return new ResponseEntity(weather, HttpStatus.OK);
+        }
+        return new ResponseEntity(null, HttpStatus.NOT_FOUND);
+    }
+
 
     @PostMapping
     public ResponseEntity<Person> save(@RequestBody Person person){
