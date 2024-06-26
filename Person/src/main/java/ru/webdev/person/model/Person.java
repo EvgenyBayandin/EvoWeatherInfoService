@@ -3,6 +3,7 @@ package ru.webdev.person.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import java.time.LocalDate;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,12 +19,26 @@ public class Person {
     @GeneratedValue
     private int id;
 
-    @NonNull private String name;
+    @NonNull
+    private String firstname;
 
-    @NonNull private String location;
+    @NonNull
+    private String surname;
 
-    public Person(@NonNull String name, @NonNull String location) {
-        this.name = name;
+    @NonNull
+    private String lastname;
+
+    @NonNull
+    private LocalDate birthdate;
+
+    @NonNull
+    private String location;
+
+    public Person(@NonNull String firstname, @NonNull String surname, @NonNull String lastname, @lombok.NonNull LocalDate birthdate, @NonNull String location) {
+        this.firstname = firstname;
+        this.surname = surname;
+        this.lastname = lastname;
+        this.birthdate = birthdate;
         this.location = location;
     }
 }
