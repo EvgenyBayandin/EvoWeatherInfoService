@@ -2,6 +2,7 @@ package ru.webdev.person.controller;
 
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +14,11 @@ import ru.webdev.person.repository.PersonRepository;
 @RestController
 @RequestMapping("/person")
 public class PersonController {
+
+//    private final String url = "http://location-service/location/weather?name=";
+
+    @Value("${location.url}")
+    private String url;
 
     @Autowired
     private PersonRepository repository;
@@ -71,7 +77,8 @@ public class PersonController {
     public ResponseEntity<Weather> getWeather(@PathVariable int id) {
         if (repository.existsById(id)) {
             String location = repository.findById(id).get().getLocation();
-            Weather weather = restTemplate.getForObject("http://localhost:8083/location/weather?name=" + location, Weather.class);
+            String locationUrl = String.format("http://%s/location/weather?name=%s", url, location);
+            Weather weather = restTemplate.getForObject(locationUrl, Weather.class);
             return new ResponseEntity(weather, HttpStatus.OK);
         }
         return new ResponseEntity("User by ID: " + id + " not found.", HttpStatus.NOT_FOUND);

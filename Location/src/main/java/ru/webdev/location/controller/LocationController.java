@@ -3,6 +3,7 @@ package ru.webdev.location.controller;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +16,9 @@ import ru.webdev.location.repository.LocationRepository;
 @RequestMapping("/location")
 public class LocationController {
 
+    @Value("${weather.url}")
+    String weatherUrl;
+
     @Autowired
     private LocationRepository repository;
 
@@ -26,7 +30,7 @@ public class LocationController {
     public ResponseEntity<Weather> redirectRequestWeather(@RequestParam String name) {
         if (repository.findByName(name).isPresent()) {
             Location geodata = repository.findByName(name).get();
-            String url = String.format("http://localhost:8082/weather?lat=%s&lon=%s", geodata.getLatitude(), geodata.getLongitude());
+            String url = String.format("http://%s/weather?lat=%s&lon=%s", weatherUrl, geodata.getLatitude(), geodata.getLongitude());
             Weather weather = restTemplate.getForObject(url, Weather.class);
             return new ResponseEntity(weather, HttpStatus.OK);
         }
