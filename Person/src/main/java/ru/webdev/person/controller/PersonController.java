@@ -56,7 +56,7 @@ public class PersonController {
             p.setFirstname(user.getFirstname());
             p.setLastname(user.getLastname());
             p.setSurname(user.getSurname());
-            p.setBirthdate(user.getBirthdate());
+            p.setBirthday(user.getBirthday());
             p.setLocation(user.getLocation());
             repository.save(p);
             return new ResponseEntity(p, HttpStatus.OK);

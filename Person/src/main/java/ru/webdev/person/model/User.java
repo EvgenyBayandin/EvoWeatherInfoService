@@ -31,16 +31,10 @@ public class User {
     private String lastname;
 
     @NonNull
-    private LocalDate birthdate;
+    private LocalDate birthday;
 
     @NonNull
     private String location;
 
-    public User(@NonNull String firstname, @NonNull String surname, @NonNull String lastname, @NonNull LocalDate birthdate, @NonNull String location) {
-        this.firstname = firstname;
-        this.surname = surname;
-        this.lastname = lastname;
-        this.birthdate = birthdate;
-        this.location = location;
-    }
+
 }
